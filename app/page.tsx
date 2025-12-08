@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Lock, EyeOff, TrendingUp, Shield } from 'lucide-react'
+import { ArrowRight, Lock, EyeOff, TrendingUp, Shield } from 'lucide-react' // Fixed TrendingUp
 import Link from 'next/link'
 import MemeCanvas from '@/components/MemeCanvas'
 
@@ -126,7 +126,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+        
       {/* Showcase */}
       <section className="py-16 bg-white/50">
         <div className="container mx-auto px-4">
@@ -136,7 +136,9 @@ export default function Home() {
               View All →
             </Link>
           </div>
-          
+           <div className="bg-red-500 p-8 text-white">
+  Tailwind is working!
+</div>  
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <motion.div
@@ -167,4 +169,4 @@ export default function Home() {
       </section>
     </div>
   )
-                  }
+}

@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Meme {
+  id            String   @id @default(cuid())
+  title         String?
+  topText       String?
+  bottomText    String?
+  imageUrl      String
+  encryptedData String?  // FHE encrypted data
+  fontColor     String   @default("#FFFFFF")
+  fontSize      Int      @default(48)
+  
+  // Analytics (encrypted)
+  views         Int      @default(0)
+  shares        Int      @default(0)
+  likes         Int      @default(0)
+  
+  // Metadata
+  creatorId     String?
+  isEncrypted   Boolean  @default(false)
+  isPublic      Boolean  @default(true)
+  tags          String[]
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([creatorId])
+  @@index([createdAt])
+  @@index([tags])
+}
+
+model User {
+  id            String   @id @default(cuid())
+  walletAddress String   @unique
+  username      String?
+  avatar        String?
+  
+  // Stats
+  totalMemes    Int      @default(0)
+  totalViews    Int      @default(0)
+  
+  memes         Meme[]
+  createdAt     DateTime @default(now())
+  
+  @@index([walletAddress])
+}
+
+model Analytics {
+  id        String   @id @default(cuid())
+  memeId    String   @unique
+  meme      Meme     @relation(fields: [memeId], references: [id], onDelete: Cascade)
+  
+  // Encrypted metrics
+  encryptedViews    String
+  encryptedShares   String
+  encryptedLikes    String
+  
+  // Trends
+  trendScore        Float
+  
+  updatedAt DateTime @updatedAt
+}

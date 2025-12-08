@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Sparkles, Lock, Upload, Zap } from 'lucide-react'
+import { Sparkles, Lock, Upload, Zap, Shield } from 'lucide-react' // ✅ Shield included
 import MemeEditor from '@/components/MemeEditor'
 import MemeCanvas from '@/components/MemeCanvas'
 

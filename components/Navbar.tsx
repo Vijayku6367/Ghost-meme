@@ -3,11 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Shield, Lock, Sparkles } from 'lucide-react'
+import { Menu, X, Shield, Lock, Sparkles, User } from 'lucide-react'
 import { motion } from 'framer-motion'
+import toast from 'react-hot-toast'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
+  const [userAddress, setUserAddress] = useState('')
   const pathname = usePathname()
 
   const navItems = [
@@ -17,6 +20,21 @@ const Navbar = () => {
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Docs', href: '/docs' },
   ]
+
+  const connectWallet = async () => {
+    // Simulate wallet connection
+    setTimeout(() => {
+      setIsConnected(true)
+      setUserAddress('0xABC...123')
+      toast.success('Wallet connected successfully!')
+    }, 1000)
+  }
+
+  const disconnectWallet = () => {
+    setIsConnected(false)
+    setUserAddress('')
+    toast.success('Wallet disconnected')
+  }
 
   return (
     <nav className="sticky top-0 z-50 glass-effect border-b">
@@ -52,10 +70,32 @@ const Navbar = () => {
             ))}
             
             <div className="ml-4 flex items-center space-x-2">
-              <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
-                <Lock className="h-4 w-4 inline mr-2" />
-                Connect Wallet
-              </button>
+              {isConnected ? (
+                <div className="flex items-center space-x-2">
+                  <div className="px-3 py-1.5 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg border border-green-200">
+                    <div className="flex items-center">
+                      <User className="h-4 w-4 mr-2 text-green-600" />
+                      <span className="text-sm font-medium text-green-700">
+                        {userAddress}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={disconnectWallet}
+                    className="px-4 py-1.5 border border-red-300 text-red-600 rounded-lg font-medium hover:bg-red-50"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={connectWallet}
+                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center"
+                >
+                  <Lock className="h-4 w-4 mr-2" />
+                  Connect Wallet
+                </button>
+              )}
               <button className="p-2 rounded-lg border hover:bg-gray-50">
                 <Sparkles className="h-5 w-5" />
               </button>
@@ -93,7 +133,10 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <button className="mt-4 px-4 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium">
+              <button
+                onClick={connectWallet}
+                className="mt-4 px-4 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium"
+              >
                 <Lock className="h-4 w-4 inline mr-2" />
                 Connect Wallet
               </button>
