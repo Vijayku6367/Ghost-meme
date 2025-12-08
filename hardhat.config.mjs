@@ -1,6 +1,9 @@
-require("@nomicfoundation/hardhat-toolbox");
+import "@nomicfoundation/hardhat-toolbox";
+import dotenv from "dotenv";
 
-module.exports = {
+dotenv.config();
+
+export default {
   solidity: "0.8.20",
   networks: {
     sepolia: {
